@@ -12,11 +12,6 @@ import java.util.List;
 @RestController
 public class ApplicationController {
 
-    @GetMapping("error")
-    public String error() {
-        return "";
-    }
-
     @GetMapping("bluff/start")
     public boolean startBluff(@RequestParam(value="deckCount") int deckCount) {
         if (Game.getPlayers().size() > 2) {
