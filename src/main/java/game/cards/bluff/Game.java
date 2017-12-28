@@ -79,7 +79,7 @@ public class Game {
         if (lastShowCards.stream().allMatch(e -> e.getRank().equals(lastBluffedCard))) {
             addCards(runningCards, activePlayerId);
             activePlayerId = lastBluffedPlayerId;
-            checkPlayer(activePlayerId);
+            checkActivePlayer();
         } else {
             addCards(runningCards, lastBluffedPlayerId);
         }
@@ -153,21 +153,10 @@ public class Game {
         else
             index+=1;
         activePlayerId = players.get(index).getId();
-        Player activePlayer = getPlayer(activePlayerId);
-        if (activePlayer.getCards().isEmpty()) {
-            changeActivePlayer();
-            winners.add(activePlayer);
-            if (lastBluffedPlayerId == activePlayer.getId()) {
-                passPlayerCount = 0;
-                runningCards.clear();
-                lastBluffedCardsCount = 0;
-                lastBluffedCard = null;
-            }
-            players.remove(activePlayer);
-        }
+        checkActivePlayer();
     }
 
-    private static void checkPlayer(int activePlayerId) {
+    private static void checkActivePlayer() {
         Player activePlayer = getPlayer(activePlayerId);
         if (activePlayer.getCards().isEmpty()) {
             changeActivePlayer();
