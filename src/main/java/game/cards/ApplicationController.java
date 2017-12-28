@@ -35,7 +35,7 @@ public class ApplicationController {
     @GetMapping("bluff/bluffed")
     public HashMap<String, String> getLastBluffed() {
         HashMap<String, String> lastBluffed = new HashMap<>();
-        lastBluffed.put("playerId", String.valueOf(Game.getLastBluffedPlayerId()));
+        lastBluffed.put("playerName", String.valueOf(Game.getPlayer(Game.getLastBluffedPlayerId()).getName()));
         lastBluffed.put("cardRank", String.valueOf(Game.getLastBluffedCard()));
         lastBluffed.put("cardCount", String.valueOf(Game.getLastBluffedCardsCount()));
         lastBluffed.put("totalCardCount", String.valueOf(Game.getRunningCardsCount()));

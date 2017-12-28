@@ -138,7 +138,7 @@ public class Game {
         gameStarted = false;
     }
 
-    private static Player getPlayer(int playerId) {
+    public static Player getPlayer(int playerId) {
         return players.stream().filter(e -> e.getId() == playerId).findFirst().get();
     }
 
