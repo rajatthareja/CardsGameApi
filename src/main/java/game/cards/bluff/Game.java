@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -55,10 +56,8 @@ public class Game {
         return players.stream().filter(e -> e.getKey().equals(playerKey)).findFirst().get();
     }
 
-    public static HashMap<Integer, String> getWinners() {
-        HashMap<Integer, String> winners = new HashMap<>();
-        Game.winners.forEach(p -> winners.put(p.getId(), p.getName()));
-        return winners;
+    public static List<String> getWinners() {
+        return Game.winners.stream().map(Player::getName).collect(Collectors.toList());
     }
 
     public static void throughCards(List<Card> cards, String bluffedCard) {

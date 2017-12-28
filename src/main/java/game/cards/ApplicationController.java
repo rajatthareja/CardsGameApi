@@ -43,7 +43,7 @@ public class ApplicationController {
     }
 
     @GetMapping("bluff/winners")
-    public HashMap<Integer, String> getBluffWinners() {
+    public List<String> getBluffWinners() {
         return Game.getWinners();
     }
 
