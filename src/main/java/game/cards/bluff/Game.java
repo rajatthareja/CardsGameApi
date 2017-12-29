@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -65,8 +66,7 @@ public class Game {
         }
         lastBluffedCardsCount = cards.size();
         lastBluffedPlayerId = activePlayerId;
-        removeCards(cards, activePlayerId);
-        addRunningCards(cards);
+        addRunningCards(removeCards(cards, activePlayerId));
         passPlayerCount = 0;
         changeActivePlayer();
     }
@@ -173,14 +173,18 @@ public class Game {
         runningCards.addAll(cards);
     }
 
-    private static void removeCards(List<Card> cards, int playerId) {
+    private static List<Card> removeCards(List<Card> cards, int playerId) {
+        List<Card> removedCards = new ArrayList<>();
         if (players.stream().anyMatch(e -> e.getId() == playerId)) {
             Player player = getPlayer(playerId);
             List<Card> newCards = new ArrayList<>();
             newCards.addAll(player.getCards());
-            newCards.removeIf(e -> cards.stream().anyMatch(f -> e.getRank().equals(f.getRank()) && e.getSuit().equals(f.getSuit())));
+            Predicate<Card> filterForRemove = e -> cards.stream().anyMatch(f -> e.getRank().equals(f.getRank()) && e.getSuit().equals(f.getSuit()));
+            removedCards = newCards.stream().filter(filterForRemove).collect(Collectors.toList());
+            newCards.removeIf(filterForRemove);
             player.setCards(newCards);
         }
+        return removedCards;
     }
 
     private static void addCards(List<Card> cards, int playerId) {
