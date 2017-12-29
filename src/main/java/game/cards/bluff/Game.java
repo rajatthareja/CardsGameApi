@@ -138,6 +138,11 @@ public class Game {
         gameStarted = false;
     }
 
+    public static void stopGame() {
+        players.clear();
+        resetGame();
+    }
+
     public static Player getPlayer(int playerId) {
         return players.stream().filter(e -> e.getId() == playerId).findFirst().get();
     }

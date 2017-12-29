@@ -96,6 +96,12 @@ public class ApplicationController {
         return Game.isGameStarted();
     }
 
+    @GetMapping("bluff/stopCardsGameApi")
+    public boolean stopGame() {
+        Game.stopGame();
+        return true;
+    }
+
     @DeleteMapping("bluff/{playerKey}/removePlayer")
     public boolean removeBluffPlayer(@PathVariable(value="playerKey") String playerKey) {
         Game.removePlayer(playerKey);
