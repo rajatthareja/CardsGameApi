@@ -169,9 +169,7 @@ public class Game {
             winners.add(activePlayer);
             if (lastBluffedPlayerId == activePlayer.getId()) {
                 passPlayerCount = 0;
-                runningCards.clear();
-                lastBluffedCardsCount = 0;
-                lastBluffedCard = null;
+                resetBluffed();
             }
             players.remove(activePlayer);
         }
