@@ -112,6 +112,7 @@ public class Game {
 
     public static void startGame(int deckCount) {
         resetGame();
+        winners.clear();
         List<Deck> decks = new ArrayList<>();
         for (int index=0;index<deckCount;index++)
             decks.add(new Deck());
@@ -137,7 +138,6 @@ public class Game {
         lastBluffedCard = null;
         lastBluffedPlayerId = 0;
         runningCards.clear();
-        winners.clear();
         gameStarted = false;
     }
 
@@ -154,23 +154,28 @@ public class Game {
         int index = IntStream.range(0, players.size())
                 .filter(e -> players.get(e).getId() == activePlayerId)
                 .findFirst().getAsInt();
-        if (index == players.size() - 1)
+        if (index == players.size() - 1) {
             index = 0;
-        else
-            index+=1;
+        } else {
+            index += 1;
+        }
         activePlayerId = players.get(index).getId();
         checkActivePlayer();
     }
 
     private static void checkActivePlayer() {
-        Player activePlayer = getPlayer(activePlayerId);
-        if (activePlayer.getCards().isEmpty()) {
-            changeActivePlayer();
-            winners.add(activePlayer);
-            if (lastBluffedPlayerId == activePlayer.getId()) {
-                resetBluffed();
+        if (players.size() < 2 ) {
+            stopGame();
+        } else {
+            Player activePlayer = getPlayer(activePlayerId);
+            if (activePlayer.getCards().isEmpty()) {
+                changeActivePlayer();
+                winners.add(activePlayer);
+                if (lastBluffedPlayerId == activePlayer.getId()) {
+                    resetBluffed();
+                }
+                players.remove(activePlayer);
             }
-            players.remove(activePlayer);
         }
     }
 
