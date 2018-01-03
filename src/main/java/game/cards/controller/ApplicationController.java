@@ -65,7 +65,7 @@ public class ApplicationController {
 
     @GetMapping("bluff/{playerKey}/pass")
     public boolean bluffPass(@PathVariable(value="playerKey") String playerKey) {
-        if (Game.getPlayer(playerKey).getId() == Game.getActivePlayerId()) {
+        if (Game.isActivePlayer(playerKey)) {
             Game.pass();
             return true;
         } else {
@@ -75,7 +75,7 @@ public class ApplicationController {
 
     @GetMapping("bluff/{playerKey}/showCards")
     public List<Card> showBluffCards(@PathVariable(value="playerKey") String playerKey) {
-        if (Game.getPlayer(playerKey).getId() == Game.getActivePlayerId()) {
+        if (Game.isActivePlayer(playerKey)) {
             return Game.showCards();
         } else {
             return new ArrayList<>();
@@ -84,7 +84,7 @@ public class ApplicationController {
 
     @PostMapping("bluff/{playerKey}/throughCards/{bluffedCard}")
     public boolean throughCards(@PathVariable(value="playerKey") String playerKey, @PathVariable(value="bluffedCard") String bluffedCard, @RequestBody List<Card> cards) {
-        if (Game.getPlayer(playerKey).getId() == Game.getActivePlayerId()) {
+        if (Game.isActivePlayer(playerKey)) {
             Game.throughCards(cards, bluffedCard);
             return true;
         } else {
@@ -94,7 +94,11 @@ public class ApplicationController {
 
     @GetMapping("bluff/{playerKey}/cards")
     public List<Card> getBluffPlayerCards(@PathVariable(value="playerKey") String playerKey) {
-        return Game.getPlayer(playerKey).getCards();
+        try {
+            return Game.getPlayer(playerKey).getCards();
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
     @GetMapping("bluff/started")

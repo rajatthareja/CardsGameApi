@@ -164,7 +164,7 @@ public class Game {
     }
 
     private static void checkActivePlayer() {
-        if (players.size() < 2 ) {
+        if (players.size() < 2 || players.stream().allMatch(player -> player.getCards().isEmpty())) {
             stopGame();
         } else {
             Player activePlayer = getPlayer(activePlayerId);
@@ -213,9 +213,17 @@ public class Game {
     }
 
     public static void removePlayer(String playerKey) {
-        if (getPlayer(playerKey).getId() == activePlayerId) {
+        if (players.stream().anyMatch(e -> e.getId() == activePlayerId && e.getKey().equals(playerKey))) {
             changeActivePlayer();
         }
         players.removeIf(player -> player.getKey().equals(playerKey));
+    }
+
+    public static boolean isActivePlayer(String playerKey) {
+        try {
+            return getPlayer(playerKey).getId() == activePlayerId;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
