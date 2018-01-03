@@ -81,24 +81,27 @@ public class Game {
         } else {
             addCards(runningCards, lastBluffedPlayerId);
         }
-        lastBluffedPlayerId = 0;
-        lastBluffedCard = null;
-        lastBluffedCardsCount = 0;
-        runningCards.clear();
+        resetBluffed();
         return lastShowCards;
     }
 
     public static void pass() {
         passPlayerCount++;
         if (passPlayerCount == players.size()) {
-            runningCards.clear();
-            lastBluffedCardsCount = 0;
-            lastBluffedCard = null;
             passPlayerCount = 0;
             activePlayerId = lastBluffedPlayerId;
+            checkActivePlayer();
+            resetBluffed();
         } else {
             changeActivePlayer();
         }
+    }
+
+    private static void resetBluffed() {
+        lastBluffedPlayerId = 0;
+        lastBluffedCard = null;
+        lastBluffedCardsCount = 0;
+        runningCards.clear();
     }
 
     public static Player addPlayer(String playerName) {
@@ -208,8 +211,9 @@ public class Game {
     }
 
     public static void removePlayer(String playerKey) {
-        if (players.stream().anyMatch(e -> e.getId() == activePlayerId && e.getKey().equals(playerKey)))
+        if (getPlayer(playerKey).getId() == activePlayerId) {
             changeActivePlayer();
+        }
         players.removeIf(player -> player.getKey().equals(playerKey));
     }
 }
