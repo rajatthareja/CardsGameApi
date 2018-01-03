@@ -88,7 +88,6 @@ public class Game {
     public static void pass() {
         passPlayerCount++;
         if (passPlayerCount == players.size()) {
-            passPlayerCount = 0;
             activePlayerId = lastBluffedPlayerId;
             checkActivePlayer();
             resetBluffed();
@@ -98,6 +97,7 @@ public class Game {
     }
 
     private static void resetBluffed() {
+        passPlayerCount = 0;
         lastBluffedPlayerId = 0;
         lastBluffedCard = null;
         lastBluffedCardsCount = 0;
@@ -168,7 +168,6 @@ public class Game {
             changeActivePlayer();
             winners.add(activePlayer);
             if (lastBluffedPlayerId == activePlayer.getId()) {
-                passPlayerCount = 0;
                 resetBluffed();
             }
             players.remove(activePlayer);
